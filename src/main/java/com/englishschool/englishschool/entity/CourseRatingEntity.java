@@ -3,29 +3,29 @@ package com.englishschool.englishschool.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Primary;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "blog")
+@Entity
+@Table(name = "course_rating")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class BlogEntity {
-
-    @Column
+public class CourseRatingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String title;
-
-    @Column
-    private Date postingDate;
-
-    @Column
     private String text;
 
+    @Column
+    private long userId;
+
+    @Column
+    private int mark;
+
+    @Column
+    private Date ratingDate;
 }

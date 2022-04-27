@@ -5,18 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class Blog {
 
     private Long id;
-    private Long commentId;
-    private String data;
+    private String title;
+    private String text;
+    private Date postingDate;
 
     public Blog(BlogEntity blogEntity) {
         this.id = blogEntity.getId();
-        this.commentId = blogEntity.getCommentId();
-        this.data = blogEntity.getData();
+        this.text = blogEntity.getText();
+        this.title = blogEntity.getTitle();
+        this.postingDate = blogEntity.getPostingDate();
     }
 }

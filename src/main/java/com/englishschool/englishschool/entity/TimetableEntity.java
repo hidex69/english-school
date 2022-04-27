@@ -3,29 +3,32 @@ package com.englishschool.englishschool.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Primary;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "blog")
+@Entity
+@Table(name = "timetable")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class BlogEntity {
-
-    @Column
+public class TimetableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String title;
+    private Date startDate;
 
     @Column
-    private Date postingDate;
+    private Date endDate;
 
     @Column
-    private String text;
+    private Long groupId;
 
+    @Column
+    private String daysOfWeek;
+
+    @Column
+    private String lessonStart;
 }

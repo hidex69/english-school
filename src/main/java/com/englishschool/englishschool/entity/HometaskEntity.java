@@ -1,31 +1,33 @@
 package com.englishschool.englishschool.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Primary;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "blog")
+@Entity
+@Table(name = "hometask")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class BlogEntity {
-
-    @Column
+public class HometaskEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String title;
+    private String name;
 
     @Column
-    private Date postingDate;
+    @JsonIgnore
+    private byte[] data;
 
     @Column
-    private String text;
+    private String contentType;
 
+    @Column
+    private Date endDate;
 }

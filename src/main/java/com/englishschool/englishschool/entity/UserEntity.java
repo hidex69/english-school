@@ -1,31 +1,34 @@
 package com.englishschool.englishschool.entity;
 
+import com.englishschool.englishschool.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Primary;
 
 import javax.persistence.*;
-import java.util.Date;
 
-@Entity(name = "blog")
+@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class BlogEntity {
-
-    @Column
+@Table(name = "user_usr")
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String title;
+    private String email;
 
     @Column
-    private Date postingDate;
+    private String name;
 
     @Column
-    private String text;
+    private String surname;
 
+    @Column
+    private UserRole userRole;
+
+    @Column
+    private Boolean deleted;
 }

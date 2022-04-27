@@ -1,10 +1,15 @@
 package com.englishschool.englishschool.service;
 
 import com.englishschool.englishschool.domain.Blog;
+import com.englishschool.englishschool.entity.BlogCommentEntity;
 import com.englishschool.englishschool.entity.BlogEntity;
-import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 public interface BlogService {
-    public Blog getBlogById(long id);
-}
+    Blog getBlogById(long id);
+    void saveBlog(BlogEntity blogRequest);
+    List<BlogCommentEntity> getBlogComments(Long blogId);
+    void saveBlogComment(BlogCommentEntity comment);
+ }

@@ -1,5 +1,6 @@
 package com.englishschool.englishschool.controller;
 
+import com.englishschool.englishschool.domain.HometaskMark;
 import com.englishschool.englishschool.domain.StudentRating;
 import com.englishschool.englishschool.entity.HometaskEntity;
 import com.englishschool.englishschool.service.HometaskService;
@@ -46,7 +47,7 @@ public class HometaskController {
         return new ResponseEntity<>(hometaskEntity.getData(), headers, HttpStatus.OK);
     }
 
-    @GetMapping("/for-student/{id}")
+    @GetMapping("/get-for-student/{id}")
     public List<HometaskEntity> getHometaskForStudent(@PathVariable long id) {
         return hometaskService.getHometasks(id);
     }
@@ -60,5 +61,13 @@ public class HometaskController {
     public StudentRating getUserRating(@PathVariable long userId) {
         return hometaskService.getRatingForUser(userId);
     }
+
+
+    @GetMapping("/get-marks/{userId}")
+    public List<HometaskMark> getUserMarks(@PathVariable long userId) {
+        return hometaskService.getMarks(userId);
+    }
+
+
 
 }

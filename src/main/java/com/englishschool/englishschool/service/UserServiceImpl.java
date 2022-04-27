@@ -12,10 +12,7 @@ import com.englishschool.englishschool.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +21,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
+    private final GroupService groupService;
     private final CourseRatingRepository courseRatingRepository;
 
     @Override
@@ -59,6 +57,18 @@ public class UserServiceImpl implements UserService {
         UserEntity user = userRepository.findById(id).orElseThrow(RuntimeException::new);
         user.setDeleted(Boolean.FALSE);
         userRepository.save(user);
+    }
+
+    @Override
+    public GroupEntity getGroupForUser(long userId) {
+        UserEntity userEntity = getUser(userId);
+        GroupEntity result = new GroupEntity();
+        if (userEntity.getUserRole() == UserRole.STUDENT) {
+            result = groupService.getGroupForUser(userId);
+        } else if (userEntity.getUserRole() == UserRole.TEACHER) {
+            result = groupService.getGroupForTeacher(userId);
+        }
+        return result;
     }
 
     @Override

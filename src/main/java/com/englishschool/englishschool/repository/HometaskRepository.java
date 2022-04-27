@@ -3,6 +3,9 @@ package com.englishschool.englishschool.repository;
 import com.englishschool.englishschool.entity.HometaskEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface HometaskRepository extends JpaRepository<HometaskEntity, Long>  {
+import java.util.Collection;
+import java.util.List;
 
+public interface HometaskRepository extends JpaRepository<HometaskEntity, Long>  {
+    List<HometaskEntity> findByIdIn(Collection<Long> ids);
 }

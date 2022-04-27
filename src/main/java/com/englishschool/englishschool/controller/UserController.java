@@ -1,10 +1,7 @@
 package com.englishschool.englishschool.controller;
 
 import com.englishschool.englishschool.domain.GroupRequest;
-import com.englishschool.englishschool.entity.AttachmentEntity;
-import com.englishschool.englishschool.entity.CourseRatingEntity;
-import com.englishschool.englishschool.entity.HometaskEntity;
-import com.englishschool.englishschool.entity.UserEntity;
+import com.englishschool.englishschool.entity.*;
 import com.englishschool.englishschool.enums.ContentType;
 import com.englishschool.englishschool.service.AttachmentService;
 import com.englishschool.englishschool.service.UserService;
@@ -19,6 +16,8 @@ import java.io.IOException;
 @AllArgsConstructor
 @RequestMapping("/api/v1/user")
 public class UserController {
+
+    //TODO: get course rating;
 
     private final UserService userService;
     private final AttachmentService attachmentService;
@@ -51,6 +50,12 @@ public class UserController {
     @PostMapping("/delete-group")
     public void deleteUserFromGroup(@RequestBody GroupRequest request) {
         userService.deleteFromGroup(request);
+    }
+
+    @GetMapping("/get-group")
+    public GroupEntity getGroupForUser() {
+        long userId = 1L;
+        return userService.getGroupForUser(userId);
     }
 
     @PostMapping("/rate-courses")

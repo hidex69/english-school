@@ -1,5 +1,6 @@
 package com.englishschool.englishschool.service;
 
+import com.englishschool.englishschool.domain.HometaskMark;
 import com.englishschool.englishschool.domain.StudentRating;
 import com.englishschool.englishschool.entity.HometaskEntity;
 
@@ -11,4 +12,5 @@ public interface HometaskService {
     List<HometaskEntity> getHometasks(long userId);
     void rate(long hometaskId, int mark);
     StudentRating getRatingForUser(long userId);
+    List<HometaskMark> getMarks(long userId);
 }

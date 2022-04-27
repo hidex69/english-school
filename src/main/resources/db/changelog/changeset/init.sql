@@ -86,8 +86,8 @@ create table if not exists attachment(
 create table if not exists course_rating(
                                             id serial primary key,
                                             text text,
-                                            userId int not null,
+                                            user_id int not null,
                                             mark int not null,
                                             rating_date date not null,
-                                            foreign key(userId) references  user_usr(id)
+                                            foreign key(user_id) references  user_usr(id)
 );

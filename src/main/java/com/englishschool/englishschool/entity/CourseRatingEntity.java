@@ -21,10 +21,10 @@ public class CourseRatingEntity {
     private String text;
 
     @Column
-    private long userId;
+    private Long userId;
 
     @Column
-    private int mark;
+    private Integer mark;
 
     @Column
     private Date ratingDate;

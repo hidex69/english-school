@@ -13,6 +13,8 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/user")
@@ -46,9 +48,9 @@ public class UserController {
         userService.assignToGroup(request);
     }
 
-    @PostMapping("/assign-group")
+    @PostMapping("/delete-group")
     public void deleteUserFromGroup(@RequestBody GroupRequest request) {
-        userService.assignToGroup(request);
+        userService.deleteFromGroup(request);
     }
 
     @PostMapping("/rate-courses")
@@ -58,7 +60,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/save-photo")
-    public void savePhoto(@RequestParam MultipartFile file, @PathVariable long id) {
+    public void savePhoto(@RequestParam MultipartFile file, @PathVariable long id) throws IOException {
         AttachmentEntity attachmentEntity = new AttachmentEntity();
         attachmentEntity.setEntityId(id);
         attachmentEntity.setContentType(file.getContentType());

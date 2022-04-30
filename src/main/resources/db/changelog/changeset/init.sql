@@ -26,6 +26,13 @@ create table if not exists user_usr(
                                        deleted boolean not null
 );
 
+create table if not exists user_info(
+    id serial primary key,
+    user_id int not null unique,
+    password varchar(150),
+    foreign key(user_id) references user_usr(id)
+);
+
 create table if not exists notification(
                                            id serial primary key,
                                            text varchar(250) not null,

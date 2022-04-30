@@ -1,35 +1,26 @@
-package com.englishschool.englishschool.entity;
+package com.englishschool.englishschool.domain;
 
 import com.englishschool.englishschool.enums.UserRole;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-
-@Entity
-@Data
 @AllArgsConstructor
+@Data
 @NoArgsConstructor
-@Table(name = "user_usr")
-public class UserEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserRequest {
+
     private Long id;
 
-    @Column
     private String email;
 
-    @Column
     private String name;
 
-    @Column
     private String surname;
 
-    @Column
     private UserRole userRole;
 
-    @Column
     private Boolean deleted;
+
+    private String password;
 }

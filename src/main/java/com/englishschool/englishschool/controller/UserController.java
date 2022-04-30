@@ -1,9 +1,12 @@
 package com.englishschool.englishschool.controller;
 
+import com.englishschool.englishschool.domain.CourseRating;
 import com.englishschool.englishschool.domain.GroupRequest;
+import com.englishschool.englishschool.domain.UserRequest;
 import com.englishschool.englishschool.entity.*;
 import com.englishschool.englishschool.enums.ContentType;
 import com.englishschool.englishschool.service.AttachmentService;
+import com.englishschool.englishschool.service.SecurityAssistant;
 import com.englishschool.englishschool.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.*;
@@ -11,16 +14,26 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/user")
 public class UserController {
 
-    //TODO: get course rating;
-
     private final UserService userService;
     private final AttachmentService attachmentService;
+    private final SecurityAssistant securityAssistant;
+
+    @GetMapping("/current")
+    public UserEntity getCurrentUser() {
+        return securityAssistant.getCurrentUser();
+    }
+
+    @GetMapping("/current-id")
+    public Long getCurrentUserId() {
+        return securityAssistant.getCurrentUserId();
+    }
 
     @GetMapping("/{id}")
     public UserEntity getUser(@PathVariable long id) {
@@ -28,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public Long saveUser(@RequestBody UserEntity newUser) {
+    public Long saveUser(@RequestBody UserRequest newUser) {
         return userService.saveUser(newUser);
     }
 
@@ -62,6 +75,11 @@ public class UserController {
     public void rateCourses(@RequestBody CourseRatingEntity ratingEntity) {
         long currentUserId = 1L;
         userService.rateCourses(ratingEntity, currentUserId);
+    }
+
+    @GetMapping("/courses-rating")
+    public List<CourseRating> getCoursesRating() {
+        return userService.getRating();
     }
 
     @PostMapping("/{id}/save-photo")

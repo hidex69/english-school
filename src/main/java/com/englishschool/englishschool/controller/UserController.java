@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
+import static com.englishschool.englishschool.enums.UserRole.*;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/user")
@@ -47,34 +49,36 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable long id) {
+        securityAssistant.currentUserHasRole(ADMIN);
         userService.deleteUser(id);
     }
 
     @PostMapping("/restore/{id}")
     public void restoreUser(@PathVariable long id) {
+        securityAssistant.currentUserHasRole(ADMIN);
         userService.restoreUser(id);
     }
 
     @PostMapping("/assign-group")
     public void assignGroupToUser(@RequestBody GroupRequest request) {
+        securityAssistant.currentUserHasRole(ADMIN);
         userService.assignToGroup(request);
     }
 
     @PostMapping("/delete-group")
     public void deleteUserFromGroup(@RequestBody GroupRequest request) {
+        securityAssistant.currentUserHasRole(ADMIN);
         userService.deleteFromGroup(request);
     }
 
     @GetMapping("/get-group")
     public GroupEntity getGroupForUser() {
-        long userId = 1L;
-        return userService.getGroupForUser(userId);
+        return userService.getGroupForUser(securityAssistant.getCurrentUserId());
     }
 
     @PostMapping("/rate-courses")
     public void rateCourses(@RequestBody CourseRatingEntity ratingEntity) {
-        long currentUserId = 1L;
-        userService.rateCourses(ratingEntity, currentUserId);
+        userService.rateCourses(ratingEntity, securityAssistant.getCurrentUserId());
     }
 
     @GetMapping("/courses-rating")
@@ -84,6 +88,7 @@ public class UserController {
 
     @PostMapping("/{id}/save-photo")
     public void savePhoto(@RequestParam MultipartFile file, @PathVariable long id) throws IOException {
+        securityAssistant.currentUserHasRole(ADMIN, TEACHER, STUDENT);
         AttachmentEntity attachmentEntity = new AttachmentEntity();
         attachmentEntity.setEntityId(id);
         attachmentEntity.setContentType(file.getContentType());

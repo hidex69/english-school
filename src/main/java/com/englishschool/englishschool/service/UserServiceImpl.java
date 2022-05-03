@@ -38,6 +38,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final UserInfoRepository userInfoRepository;
 
+
+    @Override
+    public void register(String email, String password) {
+        Optional<UserEntity> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            throw new BadRequsetException("Such user exists");
+        }
+        UserEntity userEntity = new UserEntity();
+    }
+
     @Override
     public Long saveUser(UserRequest user) {
         if (user == null) {
@@ -68,6 +78,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     public UserEntity getUser(long id) {
         return userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    }
+
+    public List<UserEntity> getUser(Collection<Long> ids) {
+        return userRepository.findByIdIn(ids);
     }
 
     public UserEntity getUser(String username) {

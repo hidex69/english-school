@@ -9,14 +9,6 @@ create table if not exists blog(
                                    title varchar(50) not null
 );
 
-create table if not exists blog_comment(
-                                           id serial primary key,
-                                           posting_date date not null,
-                                           blog_id int not null,
-                                           text varchar(150),
-                                           foreign key(blog_id) references blog(id)
-);
-
 create table if not exists user_usr(
                                        id serial primary key,
                                        email varchar(50) not null,
@@ -24,6 +16,16 @@ create table if not exists user_usr(
                                        surname varchar(50) not null,
                                        user_role int not null,
                                        deleted boolean not null
+);
+
+create table if not exists blog_comment(
+                                           id serial primary key,
+                                           posting_date date not null,
+                                           blog_id int not null,
+                                           user_id int not null,
+                                           text varchar(150),
+                                           foreign key(user_id) references user_usr(id),
+                                           foreign key(blog_id) references blog(id)
 );
 
 create table if not exists user_info(
@@ -87,7 +89,8 @@ create table if not exists attachment(
                                           data bytea not null,
                                           content_type varchar(50) not null,
                                           entity_type int not null,
-                                          entity_id int not null
+                                          entity_id int not null,
+                                          name varchar(50) not null
 );
 
 create table if not exists course_rating(

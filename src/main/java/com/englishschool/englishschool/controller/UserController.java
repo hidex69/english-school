@@ -14,6 +14,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -45,7 +46,8 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public Long saveUser(@RequestBody UserRequest newUser) {
+    public Long saveUser(@RequestBody UserRequest newUser, HttpServletResponse response) {
+        response.setStatus(HttpStatus.OK.value());
         return userService.saveUser(newUser);
     }
 
@@ -118,5 +120,7 @@ public class UserController {
         securityAssistant.currentUserHasRole(ADMIN);
         return groupService.createGroup(groupName, teacherId);
     }
+
+
 
 }

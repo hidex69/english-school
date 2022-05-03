@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
+import java.util.Date;
+
 @Service
 @AllArgsConstructor
 public class BlogServiceImpl implements BlogService {
@@ -20,16 +22,18 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     @Transactional
-    public void saveBlog(BlogEntity blogRequest) {
+    public Long saveBlog(BlogEntity blogRequest) {
         if (blogRequest == null) {
-            return;
+            return null;
         }
         BlogEntity blogEntity = new BlogEntity();
         if (blogRequest.getId() != null) {
                 blogEntity = blogRepository.findById(blogRequest.getId()).orElseThrow(RuntimeException::new);
         }
         blogEntity.setText(blogRequest.getText());
-        blogRepository.save(blogEntity);
+        blogEntity.setPostingDate(new Date());
+        blogEntity.setTitle(blogRequest.getTitle());
+        return blogRepository.save(blogEntity).getId();
     }
 
     @Override

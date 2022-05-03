@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.englishschool.englishschool.enums.UserRole.*;
 
+@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1/timetable")
 @AllArgsConstructor

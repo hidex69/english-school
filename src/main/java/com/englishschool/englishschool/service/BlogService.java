@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface BlogService {
     Blog getBlogById(long id);
-    void saveBlog(BlogEntity blogRequest);
+    Long saveBlog(BlogEntity blogRequest);
     List<BlogCommentEntity> getBlogComments(Long blogId);
     void saveBlogComment(BlogCommentEntity comment);
  }

@@ -87,7 +87,8 @@ create table if not exists attachment(
                                           data bytea not null,
                                           content_type varchar(50) not null,
                                           entity_type int not null,
-                                          entity_id int not null
+                                          entity_id int not null,
+                                          name varchar(50) not null
 );
 
 create table if not exists course_rating(

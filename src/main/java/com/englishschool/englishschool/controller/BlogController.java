@@ -18,6 +18,7 @@ import java.util.List;
 
 import static com.englishschool.englishschool.enums.UserRole.*;
 
+@CrossOrigin("http://localhost:3000")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/blog")
@@ -33,9 +34,9 @@ public class BlogController {
     }
 
     @PostMapping
-    public void saveBlog(@RequestBody BlogEntity blogRequest) {
+    public Long saveBlog(@RequestBody BlogEntity blogRequest) {
         securityAssistant.currentUserHasRole(ADMIN);
-        blogService.saveBlog(blogRequest);
+        return blogService.saveBlog(blogRequest);
     }
 
     @GetMapping("/get-blog-comments/{blogId}")

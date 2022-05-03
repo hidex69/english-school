@@ -24,5 +24,8 @@ public class BlogCommentEntity {
     private Long blogId;
 
     @Column
+    private Long userId;
+
+    @Column
     private String text;
 }

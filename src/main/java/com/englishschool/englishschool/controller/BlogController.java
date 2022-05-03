@@ -1,6 +1,7 @@
 package com.englishschool.englishschool.controller;
 
 import com.englishschool.englishschool.domain.Blog;
+import com.englishschool.englishschool.domain.BlogComment;
 import com.englishschool.englishschool.entity.AttachmentEntity;
 import com.englishschool.englishschool.entity.BlogCommentEntity;
 import com.englishschool.englishschool.entity.BlogEntity;
@@ -40,14 +41,14 @@ public class BlogController {
     }
 
     @GetMapping("/get-blog-comments/{blogId}")
-    public List<BlogCommentEntity> getBlogComments(@PathVariable Long blogId) {
+    public List<BlogComment> getBlogComments(@PathVariable Long blogId) {
         return blogService.getBlogComments(blogId);
     }
 
     @PostMapping("/save-comment")
     public void saveBlogComment(@RequestBody BlogCommentEntity comment) {
         securityAssistant.currentUserHasRole(ADMIN, TEACHER, STUDENT);
-        blogService.saveBlogComment(comment);
+        blogService.saveBlogComment(comment, securityAssistant.getCurrentUserId());
     }
 
 

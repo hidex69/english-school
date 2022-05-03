@@ -11,6 +11,6 @@ import java.util.List;
 public interface BlogService {
     Blog getBlogById(long id);
     Long saveBlog(BlogEntity blogRequest);
-    List<BlogCommentEntity> getBlogComments(Long blogId);
-    void saveBlogComment(BlogCommentEntity comment);
+    void saveBlogComment(BlogCommentEntity comment, Long userId);
+    List<BlogComment> getBlogComments(Long blogId);
  }

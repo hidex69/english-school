@@ -28,4 +28,9 @@ public class GroupServiceImpl implements GroupService {
         UserEntity user = userRepository.findById(teacherId).orElseThrow(RuntimeException::new);
         return groupRepository.findFirstByTeacherId(teacherId).orElseThrow(RuntimeException::new);
     }
+
+    @Override
+    public Long createGroup(String name, Long id) {
+        return groupRepository.save(new GroupEntity(null, name, id, Collections.emptySet())).getId();
+    }
 }

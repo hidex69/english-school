@@ -14,7 +14,7 @@ public class TimetableServiceImpl implements TimetableService {
 
     @Override
     public TimetableEntity getTimetable(long userId) {
-        return timetableRepository.findByGroupId(groupService.getGroupForUser(userId).getId()).orElseThrow(RuntimeException::new);
+        return timetableRepository.findByGroupId(groupService.getGroupForUser(userId).getId()).orElseThrow(() -> new RuntimeException("No timetable available"));
     }
 
     @Override
@@ -27,7 +27,7 @@ public class TimetableServiceImpl implements TimetableService {
         newTimetable.setDaysOfWeek(timetableEntity.getDaysOfWeek());
         newTimetable.setGroupId(timetableEntity.getGroupId());
         newTimetable.setStartDate(timetableEntity.getStartDate());
-        newTimetable.setGroupId(timetableEntity.getGroupId());
+        newTimetable.setLessonStart(timetableEntity .getLessonStart());
         timetableRepository.save(newTimetable);
     }
 

@@ -5,4 +5,5 @@ import com.englishschool.englishschool.entity.GroupEntity;
 public interface GroupService {
     GroupEntity getGroupForUser(long userId);
     GroupEntity getGroupForTeacher(long teacherId);
+    Long createGroup(String name, Long id);
 }

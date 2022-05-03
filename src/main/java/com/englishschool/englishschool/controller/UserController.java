@@ -6,6 +6,7 @@ import com.englishschool.englishschool.domain.UserRequest;
 import com.englishschool.englishschool.entity.*;
 import com.englishschool.englishschool.enums.ContentType;
 import com.englishschool.englishschool.service.AttachmentService;
+import com.englishschool.englishschool.service.GroupService;
 import com.englishschool.englishschool.service.SecurityAssistant;
 import com.englishschool.englishschool.service.UserService;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,7 @@ public class UserController {
     private final UserService userService;
     private final AttachmentService attachmentService;
     private final SecurityAssistant securityAssistant;
+    private final GroupService groupService;
 
     @GetMapping("/current")
     public UserEntity getCurrentUser() {
@@ -109,6 +111,12 @@ public class UserController {
                 .build();
         headers.setContentDisposition(contentDisposition);
         return new ResponseEntity<>(attachmentEntity.getData(), headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/create-group")
+    public Long createGroup(@RequestParam String groupName, @RequestParam long teacherId) {
+        securityAssistant.currentUserHasRole(ADMIN);
+        return groupService.createGroup(groupName, teacherId);
     }
 
 }

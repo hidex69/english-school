@@ -29,6 +29,11 @@ public class BlogServiceImpl implements BlogService {
     private final UserService userService;
 
     @Override
+    public List<BlogEntity> getAll() {
+        return blogRepository.findAll();
+    }
+
+    @Override
     @Transactional
     public Long saveBlog(BlogEntity blogRequest) {
         if (blogRequest == null) {

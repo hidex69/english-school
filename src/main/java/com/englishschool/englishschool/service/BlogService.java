@@ -13,4 +13,5 @@ public interface BlogService {
     Long saveBlog(BlogEntity blogRequest);
     void saveBlogComment(BlogCommentEntity comment, Long userId);
     List<BlogComment> getBlogComments(Long blogId);
+    List<BlogEntity> getAll();
  }

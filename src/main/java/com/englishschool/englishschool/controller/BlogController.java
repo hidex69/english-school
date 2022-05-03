@@ -45,6 +45,11 @@ public class BlogController {
         return blogService.getBlogComments(blogId);
     }
 
+    @GetMapping("/all")
+    List<BlogEntity> getBlogs() {
+        return blogService.getAll();
+    }
+
     @PostMapping("/save-comment")
     public void saveBlogComment(@RequestBody BlogCommentEntity comment) {
         securityAssistant.currentUserHasRole(ADMIN, TEACHER, STUDENT);

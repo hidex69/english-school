@@ -31,6 +31,8 @@ public class UserController {
     private final SecurityAssistant securityAssistant;
     private final GroupService groupService;
 
+    //TODO: 1 получение ггрупп для препода и админа,
+
     @GetMapping("/current")
     public UserEntity getCurrentUser() {
         return securityAssistant.getCurrentUser();

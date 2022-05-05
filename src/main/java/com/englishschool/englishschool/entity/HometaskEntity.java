@@ -29,5 +29,8 @@ public class HometaskEntity {
     private String contentType;
 
     @Column
-    private Date endDate;
+    private Date date;
+
+    @Column
+    private Long groupId;
 }

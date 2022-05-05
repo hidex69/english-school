@@ -1,5 +1,6 @@
 package com.englishschool.englishschool.controller;
 
+import com.englishschool.englishschool.domain.Hometask;
 import com.englishschool.englishschool.domain.HometaskMark;
 import com.englishschool.englishschool.domain.StudentRating;
 import com.englishschool.englishschool.entity.HometaskEntity;
@@ -28,15 +29,15 @@ public class HometaskController {
 
     @PostMapping
     public void saveHometask(@RequestParam MultipartFile file,
-                             @RequestParam @DateTimeFormat(pattern = "dd.MM.yyyy") Date endDate,
-                             @RequestParam Long id) throws IOException {
-        securityAssistant.currentUserHasRole(STUDENT, TEACHER);
+                             @RequestParam Long groupId) throws IOException {
+        securityAssistant.currentUserHasRole(TEACHER);
         HometaskEntity hometaskEntity = new HometaskEntity();
         hometaskEntity.setData(file.getBytes());
-        hometaskEntity.setEndDate(endDate);
+        hometaskEntity.setDate(new Date());
         hometaskEntity.setName(file.getName());
         hometaskEntity.setContentType(file.getContentType());
-        hometaskService.saveHometask(hometaskEntity, id);
+        hometaskEntity.setGroupId(groupId);
+        hometaskService.saveHometask(hometaskEntity, securityAssistant.getCurrentUserId(), groupId);
     }
 
     @GetMapping("/{id}")
@@ -54,10 +55,10 @@ public class HometaskController {
         return new ResponseEntity<>(hometaskEntity.getData(), headers, HttpStatus.OK);
     }
 
-    @GetMapping("/get-for-student/{id}")
-    public List<HometaskEntity> getHometaskForStudent(@PathVariable long id) {
+    @GetMapping("/get-for-student")
+    public List<Hometask> getHometaskForStudent() {
         securityAssistant.currentUserHasRole(STUDENT);
-        return hometaskService.getHometasks(id);
+        return hometaskService.getHometasks(securityAssistant.getCurrentUserId());
     }
 
     @PostMapping("/rate-hometask")

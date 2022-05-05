@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface HometaskRepository extends JpaRepository<HometaskEntity, Long>  {
     List<HometaskEntity> findByIdIn(Collection<Long> ids);
+    List<HometaskEntity> findByGroupId(Long id);
 }

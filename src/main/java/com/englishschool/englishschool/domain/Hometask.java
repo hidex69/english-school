@@ -4,13 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HometaskMark {
+public class Hometask {
+    private Long id;
     private String name;
-    private int mark;
-    private String hometaskUrl;
+    private String url;
 }

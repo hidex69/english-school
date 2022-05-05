@@ -1,19 +1,11 @@
 package com.englishschool.englishschool.service;
 
-import com.englishschool.englishschool.domain.CourseRating;
-import com.englishschool.englishschool.domain.GroupRequest;
-import com.englishschool.englishschool.domain.UserRequest;
-import com.englishschool.englishschool.entity.CourseRatingEntity;
-import com.englishschool.englishschool.entity.GroupEntity;
-import com.englishschool.englishschool.entity.UserEntity;
-import com.englishschool.englishschool.entity.UserInfoEntity;
+import com.englishschool.englishschool.domain.*;
+import com.englishschool.englishschool.entity.*;
 import com.englishschool.englishschool.enums.UserRole;
 import com.englishschool.englishschool.exception.BadRequsetException;
 import com.englishschool.englishschool.exception.EntityNotFoundException;
-import com.englishschool.englishschool.repository.CourseRatingRepository;
-import com.englishschool.englishschool.repository.GroupRepository;
-import com.englishschool.englishschool.repository.UserInfoRepository;
-import com.englishschool.englishschool.repository.UserRepository;
+import com.englishschool.englishschool.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -38,14 +30,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final UserInfoRepository userInfoRepository;
 
-
     @Override
-    public void register(String email, String password) {
-        Optional<UserEntity> user = userRepository.findByEmail(email);
-        if (user.isPresent()) {
-            throw new BadRequsetException("Such user exists");
-        }
-        UserEntity userEntity = new UserEntity();
+    public List<UserEntity> getUsersByUserRole(UserRole role) {
+        return userRepository.findByUserRole(role);
     }
 
     @Override
@@ -59,7 +46,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             newUser = userRepository.findById(user.getId()).orElseThrow(EntityNotFoundException::new);
         }
         Optional<UserEntity> checkEmail = userRepository.findByEmail(user.getEmail());
-        if (checkEmail.isPresent()) {
+        if (checkEmail.isPresent() && user.getUserRole() == UserRole.NEW) {
             throw new BadRequsetException("This email already exists");
         }
         newUser.setEmail(user.getEmail());
@@ -102,8 +89,28 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(user);
     }
 
+    private static final String BASE_URL = "localhost:8080/api/v1/hometask/";
+    private final UserHometaskRepository userHometaskRepository;
+    private final HometaskRepository hometaskRepository;
+
+    private List<HometaskMark> getMarks(long userId) {
+        UserEntity user = getUser(userId);
+        List<UserHometaskEntity> userHometaskEntities = userHometaskRepository.findByUserId(userId);
+        List<HometaskEntity> hometaskEntities = hometaskRepository.findByIdIn(
+                userHometaskEntities.stream().map(UserHometaskEntity::getHometaskId).collect(Collectors.toList())
+        );
+        Map<Long, HometaskEntity> map = userHometaskEntities.stream().collect(Collectors.toMap(UserHometaskEntity::getId,
+                x -> hometaskEntities.get(((int)x.getHometaskId()))));
+        return userHometaskRepository.findByUserId(userId).stream().filter(x -> x.isDone() && x.getMark() != null)
+                .map(x -> new HometaskMark(
+                        map.get(x.getHometaskId()).getName(),
+                        x.getMark(),
+                        BASE_URL + x.getHometaskId()
+                )).collect(Collectors.toList());
+    }
+
     @Override
-    public GroupEntity getGroupForUser(long userId) {
+    public GroupWithStudents getGroupForUser(long userId) {
         UserEntity userEntity = getUser(userId);
         GroupEntity result = new GroupEntity();
         if (userEntity.getUserRole() == UserRole.STUDENT) {
@@ -111,7 +118,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         } else if (userEntity.getUserRole() == UserRole.TEACHER) {
             result = groupService.getGroupForTeacher(userId);
         }
-        return result;
+        UserEntity teacher = getUser(result.getTeacherId());
+        List<StudentWithMark> studentWithMarks = result.getParticipants()
+                .stream().map(x -> new StudentWithMark(x.getId(), x.getName() + " " + x.getSurname(), getMarks(x.getId())))
+                .collect(Collectors.toList());
+        return new GroupWithStudents(result.getId(), result.getName(), teacher, studentWithMarks);
     }
 
     @Override

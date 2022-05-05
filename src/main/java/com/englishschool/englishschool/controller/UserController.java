@@ -1,10 +1,9 @@
 package com.englishschool.englishschool.controller;
 
-import com.englishschool.englishschool.domain.CourseRating;
-import com.englishschool.englishschool.domain.GroupRequest;
-import com.englishschool.englishschool.domain.UserRequest;
+import com.englishschool.englishschool.domain.*;
 import com.englishschool.englishschool.entity.*;
 import com.englishschool.englishschool.enums.ContentType;
+import com.englishschool.englishschool.enums.UserRole;
 import com.englishschool.englishschool.service.AttachmentService;
 import com.englishschool.englishschool.service.GroupService;
 import com.englishschool.englishschool.service.SecurityAssistant;
@@ -32,6 +31,24 @@ public class UserController {
     private final GroupService groupService;
 
     //TODO: 1 получение ггрупп для препода и админа,
+
+    @GetMapping("/get-new-users")
+    public List<UserEntity> getNewUsers() {
+        securityAssistant.currentUserHasRole(ADMIN);
+        return userService.getUsersByUserRole(NEW);
+    }
+
+    @GetMapping("groups-without-timetable")
+    public List<Group> getGroups() {
+        securityAssistant.currentUserHasRole(ADMIN);
+        return groupService.getFreeGroups();
+    }
+
+    @GetMapping("/teachers")
+    public List<UserEntity> getAllTeachers() {
+        securityAssistant.currentUserHasRole(ADMIN);
+        return userService.getUsersByUserRole(TEACHER);
+    }
 
     @GetMapping("/current")
     public UserEntity getCurrentUser() {
@@ -79,7 +96,7 @@ public class UserController {
     }
 
     @GetMapping("/get-group")
-    public GroupEntity getGroupForUser() {
+    public GroupWithStudents getGroupForUser() {
         return userService.getGroupForUser(securityAssistant.getCurrentUserId());
     }
 

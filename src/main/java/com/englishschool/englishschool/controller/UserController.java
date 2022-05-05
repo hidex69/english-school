@@ -38,10 +38,16 @@ public class UserController {
         return userService.getUsersByUserRole(NEW);
     }
 
-    @GetMapping("/groups-without-timetable")
-    public List<Group> getGroups() {
+    @GetMapping("/groups-without-teacher")
+    public List<GroupShort> getFreeGroups() {
         securityAssistant.currentUserHasRole(ADMIN);
         return groupService.getFreeGroups();
+    }
+
+    @GetMapping("/groups-without-timetable")
+    public List<GroupShort> getGroupsWithoutTimetable() {
+        securityAssistant.currentUserHasRole(ADMIN);
+        return groupService.getGroupsWithoutTimetable() ;
     }
 
     @GetMapping("/teachers")

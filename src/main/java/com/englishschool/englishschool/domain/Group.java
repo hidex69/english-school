@@ -1,16 +1,18 @@
 package com.englishschool.englishschool.domain;
 
+import com.englishschool.englishschool.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HometaskMark {
+public class Group {
+    private Long id;
     private String name;
-    private int mark;
-    private String hometaskUrl;
+    private Set<UserEntity> participants;
+    private UserEntity teacher;
 }

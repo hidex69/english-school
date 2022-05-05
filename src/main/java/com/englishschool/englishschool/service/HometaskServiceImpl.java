@@ -1,5 +1,6 @@
 package com.englishschool.englishschool.service;
 
+import com.englishschool.englishschool.domain.Hometask;
 import com.englishschool.englishschool.domain.HometaskMark;
 import com.englishschool.englishschool.domain.StudentRating;
 import com.englishschool.englishschool.entity.GroupEntity;
@@ -31,28 +32,20 @@ public class HometaskServiceImpl implements HometaskService {
     private final UserService userService;
 
     @Override
-    public void saveHometask(HometaskEntity hometask, long userId) {
+    public void saveHometask(HometaskEntity hometask, long userId, long groupId) {
         UserEntity user = userService.getUser(userId);
         HometaskEntity hometaskEntity = hometaskRepository.save(hometask);
         List<UserHometaskEntity> userHometaskEntities = new LinkedList<>();
-        if (user.getUserRole() == UserRole.STUDENT) {
-            GroupEntity groupEntity = groupService.getGroupForTeacher(userId);
-            Set<Long> studentIds = groupEntity.getParticipants().stream()
-                    .map(UserEntity::getId).collect(Collectors.toSet());
-            studentIds.forEach(x -> {
-                UserHometaskEntity userHometaskEntity = new UserHometaskEntity();
-                userHometaskEntity.setUserId(x);
-                userHometaskEntity.setHometaskId(hometaskEntity.getId());
-                userHometaskEntity.setDone(false);
-                userHometaskEntities.add(userHometaskEntity);
-            });
-        } else if (user.getUserRole() == UserRole.STUDENT) {
+        GroupEntity groupEntity = groupService.getGroupById(groupId);
+        Set<Long> studentIds = groupEntity.getParticipants().stream()
+                .map(UserEntity::getId).collect(Collectors.toSet());
+        studentIds.forEach(x -> {
             UserHometaskEntity userHometaskEntity = new UserHometaskEntity();
+            userHometaskEntity.setUserId(x);
             userHometaskEntity.setHometaskId(hometaskEntity.getId());
-            userHometaskEntity.setUserId(userId);
-            userHometaskEntity.setDone(true);
+            userHometaskEntity.setDone(false);
             userHometaskEntities.add(userHometaskEntity);
-        }
+        });
         userHometaskRepository.saveAll(userHometaskEntities);
     }
 
@@ -62,10 +55,9 @@ public class HometaskServiceImpl implements HometaskService {
     }
 
     @Override
-    public List<HometaskEntity> getHometasks(long userId) {
-        Set<Long> hometaskIds = userHometaskRepository.findByUserId(userId)
-                .stream().map(UserHometaskEntity::getHometaskId).collect(Collectors.toSet());
-        return hometaskRepository.findAllById(hometaskIds);
+    public List<Hometask> getHometasks(long userId) {
+        List<HometaskEntity> hometasks = hometaskRepository.findByGroupId(groupService.getGroupForUser(userId).getId());
+        return hometasks.stream().map(x -> new Hometask(x.getId(), x.getName(), BASE_URL + x.getId())).collect(Collectors.toList());
     }
 
     @Override

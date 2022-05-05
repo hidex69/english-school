@@ -71,7 +71,9 @@ create table if not exists hometask(
                                        name varchar(50) not null,
                                        data bytea not null,
                                        content_type varchar(50) not null,
-                                       end_date date not null
+                                       group_id int not null,
+                                       date date not null,
+                                       foreign key(group_id) references group_gr(id)
 );
 
 create table if not exists user_hometask(

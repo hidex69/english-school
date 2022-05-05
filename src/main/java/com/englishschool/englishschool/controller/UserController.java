@@ -38,7 +38,7 @@ public class UserController {
         return userService.getUsersByUserRole(NEW);
     }
 
-    @GetMapping("groups-without-timetable")
+    @GetMapping("/groups-without-timetable")
     public List<Group> getGroups() {
         securityAssistant.currentUserHasRole(ADMIN);
         return groupService.getFreeGroups();

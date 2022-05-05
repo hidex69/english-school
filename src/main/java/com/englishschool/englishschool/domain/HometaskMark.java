@@ -13,4 +13,5 @@ public class HometaskMark {
     private String name;
     private int mark;
     private String hometaskUrl;
+    private Date date;
 }

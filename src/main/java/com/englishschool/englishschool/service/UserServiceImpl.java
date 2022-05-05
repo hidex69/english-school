@@ -99,13 +99,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         List<HometaskEntity> hometaskEntities = hometaskRepository.findByIdIn(
                 userHometaskEntities.stream().map(UserHometaskEntity::getHometaskId).collect(Collectors.toList())
         );
-        Map<Long, HometaskEntity> map = userHometaskEntities.stream().collect(Collectors.toMap(UserHometaskEntity::getId,
-                x -> hometaskEntities.get(((int)x.getHometaskId()))));
-        return userHometaskRepository.findByUserId(userId).stream().filter(x -> x.isDone() && x.getMark() != null)
+        Map<Long, HometaskEntity> map = userHometaskEntities.stream().collect(Collectors.toMap(UserHometaskEntity::getHometaskId,
+                x -> hometaskEntities.stream().filter(i -> i.getId() == x.getHometaskId()).findFirst().get()));
+        return userHometaskRepository.findByUserId(userId).stream()
                 .map(x -> new HometaskMark(
                         map.get(x.getHometaskId()).getName(),
-                        x.getMark(),
-                        BASE_URL + x.getHometaskId()
+                        x.getMark() == null ? -1 : x.getMark(),
+                        BASE_URL + x.getHometaskId(),
+                        map.get(x.getHometaskId()).getDate()
                 )).collect(Collectors.toList());
     }
 

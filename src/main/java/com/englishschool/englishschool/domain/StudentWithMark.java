@@ -12,5 +12,5 @@ import java.util.List;
 public class StudentWithMark {
     private Long id;
     private String fullName;
-    private List<HometaskMark> marks;
+    private List<HometaskMark> hometasks;
 }

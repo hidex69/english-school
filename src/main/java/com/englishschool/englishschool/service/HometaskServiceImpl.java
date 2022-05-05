@@ -105,7 +105,8 @@ public class HometaskServiceImpl implements HometaskService {
                 .map(x -> new HometaskMark(
                         map.get(x.getHometaskId()).getName(),
                         x.getMark(),
-                        BASE_URL + x.getHometaskId()
+                        BASE_URL + x.getHometaskId(),
+                        map.get(x.getHometaskId()).getDate()
                 )).collect(Collectors.toList());
     }
 }

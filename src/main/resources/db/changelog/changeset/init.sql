@@ -59,7 +59,7 @@ create table if not exists group_user(
 
 create table if not exists timetable(
                                         id serial primary key,
-                                        group_id int not null,
+                                        group_id int not null unique,
                                         start_date date not null,
                                         end_date date not null,
                                         days_of_week varchar(20) not null,

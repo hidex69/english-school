@@ -1,11 +1,14 @@
 package com.englishschool.englishschool.service;
 
 import com.englishschool.englishschool.entity.TimetableEntity;
+import com.englishschool.englishschool.exception.BadRequsetException;
 import com.englishschool.englishschool.exception.EntityNotFoundException;
 import com.englishschool.englishschool.repository.GroupRepository;
 import com.englishschool.englishschool.repository.TimetableRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -25,6 +28,11 @@ public class TimetableServiceImpl implements TimetableService {
         TimetableEntity  newTimetable = new TimetableEntity();
         if (timetableEntity.getId() != null) {
             newTimetable = timetableRepository.findById(timetableEntity.getId()).orElseThrow(RuntimeException::new);
+        } else {
+            Optional<TimetableEntity> check = timetableRepository.findByGroupId(timetableEntity.getGroupId());
+            if (check.isPresent()) {
+                throw new BadRequsetException("Timetable already exists");
+            }
         }
         newTimetable.setEndDate(timetableEntity.getEndDate());
         newTimetable.setDaysOfWeek(timetableEntity.getDaysOfWeek());

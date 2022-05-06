@@ -18,7 +18,7 @@ public class TimetableController {
     private final SecurityAssistant securityAssistant;
 
     @GetMapping("/{groupId}")
-    public TimetableEntity getTimetable(@PathVariable Long groupId) {
+    public TimetableEntity getTimetable(@PathVariable long groupId) {
         securityAssistant.currentUserHasRole(ADMIN, TEACHER, STUDENT);
         return timetableService.getTimetable(groupId);
     }

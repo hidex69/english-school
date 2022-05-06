@@ -42,33 +42,7 @@ public class GroupServiceImpl implements GroupService {
     public Long createGroup(String name, Long id) {
         return groupRepository.save(new GroupEntity(null, name, id, Collections.emptySet())).getId();
     }
-
-    @Override
-    public List<GroupShort> getFreeGroups() {
-        List<GroupEntity> groups = groupRepository.findAll().stream().filter(x -> x.getTeacherId() == null).collect(Collectors.toList());
-        Map<Long, UserEntity> teacherMap = userRepository.findByIdIn(groups.stream().map(GroupEntity::getTeacherId).collect(Collectors.toList()))
-                .stream().collect(Collectors.toMap(UserEntity::getId, x -> x));
-        return groups.stream()
-                .map(x -> new GroupShort(x.getId(), x.getName(), x.getParticipants().size()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<GroupShort> getGroupsWithoutTimetable() {
-        List<GroupEntity> groups = groupRepository.findAll();
-        List<Long> groupsWithTimeTableIds = timetableRepository.findByGroupIdIn(
-                groups
-                        .stream()
-                        .map(GroupEntity::getId)
-                        .collect(Collectors.toList())
-        )
-                .stream()
-                .map(TimetableEntity::getGroupId)
-                .collect(Collectors.toList());
-        return groups.stream().filter(x -> !groupsWithTimeTableIds.contains(x.getId()))
-                .map(x -> new GroupShort(x.getId(), x.getName(), x.getParticipants().size()))
-                .collect(Collectors.toList());
-    }
+    
 
     @Override
     public GroupEntity getGroupById(long id) {

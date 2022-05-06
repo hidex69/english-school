@@ -62,7 +62,7 @@ public class HometaskServiceImpl implements HometaskService {
 
     @Override
     public void rate(long hometaskId, int mark, long userId) {
-        if (mark < 0 || mark > 10) {
+        if (mark < -1 || mark > 10) {
             return;
         }
         UserHometaskEntity userHometaskEntity = userHometaskRepository.findByHometaskIdAndUserId(hometaskId, userId)

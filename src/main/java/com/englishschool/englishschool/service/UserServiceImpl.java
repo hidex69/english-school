@@ -31,6 +31,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserInfoRepository userInfoRepository;
 
     @Override
+    public Group getGroup(long id) {
+        GroupEntity groupEntity = groupService.getGroupEntityById(id);
+        UserEntity teacher = null;
+        if (groupEntity.getTeacherId() != null) {
+            teacher = getUser(groupEntity.getTeacherId());
+        }
+        return new Group(groupEntity.getId(), groupEntity.getName(), groupEntity.getParticipants(), teacher);
+    }
+
+    @Override
+    public UserEntity getUser(long id) {
+        return userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
     public List<UserEntity> getFreeTeachers() {
         List<Long> ids = groupRepository.findAll().stream().map(GroupEntity::getTeacherId).collect(Collectors.toList());
         return getUsersByUserRole(UserRole.TEACHER).stream().filter(x -> !ids.contains(x.getId())).collect(Collectors.toList());
@@ -69,7 +84,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userId;
     }
 
-    public UserEntity getUser(long id) {
+    public UserEntity getUser(Long id) {
         return userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 

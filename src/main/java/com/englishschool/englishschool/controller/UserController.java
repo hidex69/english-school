@@ -132,6 +132,12 @@ public class UserController {
         return userService.getGroupForUser(securityAssistant.getCurrentUserId());
     }
 
+    @GetMapping("/get-group/{id}")
+    public Group getGroupById(@PathVariable long id) {
+        securityAssistant.currentUserHasRole(ADMIN, TEACHER, STUDENT);
+        return userService.getGroup(id);
+    }
+
     @PostMapping("/rate-courses")
     public void rateCourses(@RequestBody CourseRatingEntity ratingEntity) {
         userService.rateCourses(ratingEntity, securityAssistant.getCurrentUserId());

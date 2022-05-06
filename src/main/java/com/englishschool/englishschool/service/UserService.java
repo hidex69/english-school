@@ -22,4 +22,5 @@ public interface UserService {
     List<CourseRating> getRating();
     List<UserEntity> getUsersByUserRole(UserRole role);
     List<UserEntity> getFreeTeachers();
+    Group getGroup(long id);
 }

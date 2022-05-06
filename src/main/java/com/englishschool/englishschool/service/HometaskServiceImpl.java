@@ -61,16 +61,17 @@ public class HometaskServiceImpl implements HometaskService {
     }
 
     @Override
-    public void rate(long hometaskId, int mark) {
+    public void rate(long hometaskId, int mark, long userId) {
         if (mark < 0 || mark > 10) {
             return;
         }
-        UserHometaskEntity userHometaskEntity = userHometaskRepository.findByHometaskId(hometaskId)
+        UserHometaskEntity userHometaskEntity = userHometaskRepository.findByHometaskIdAndUserId(hometaskId, userId)
                 .orElseThrow(RuntimeException::new);
         if (!userHometaskEntity.isDone()) {
             return;
         }
         userHometaskEntity.setMark(mark);
+        userHometaskEntity.setDone(true);
         userHometaskRepository.save(userHometaskEntity);
     }
 

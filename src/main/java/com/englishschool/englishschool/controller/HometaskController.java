@@ -62,9 +62,9 @@ public class HometaskController {
     }
 
     @PostMapping("/rate-hometask")
-    public void rateHometask(@RequestParam long hometaskId, @RequestParam int mark) {
+    public void rateHometask(@RequestParam long hometaskId, @RequestParam long userId, @RequestParam int mark) {
         securityAssistant.currentUserHasRole(TEACHER);
-        hometaskService.rate(hometaskId, mark);
+        hometaskService.rate(hometaskId, mark, userId);
     }
 
     @GetMapping("/rating/{id}")

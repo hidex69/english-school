@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface UserHometaskRepository extends JpaRepository<UserHometaskEntity, Long> {
     List<UserHometaskEntity> findByUserId(long userId);
     Optional<UserHometaskEntity> findByHometaskId(long hometaskId);
+    Optional<UserHometaskEntity> findByHometaskIdAndUserId(long hId, long uId);
 }

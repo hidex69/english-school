@@ -11,7 +11,7 @@ public interface HometaskService {
     void saveHometask(HometaskEntity hometask, long userId, long groupId);
     HometaskEntity getHometask(long hometaskId);
     List<Hometask> getHometasks(long userId);
-    void rate(long hometaskId, int mark);
+    void rate(long hometaskId, int mark, long userId);
     StudentRating getRatingForUser(long userId);
     List<HometaskMark> getMarks(long userId);
 }

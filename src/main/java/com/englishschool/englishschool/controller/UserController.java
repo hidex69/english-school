@@ -103,6 +103,7 @@ public class UserController {
 
     @GetMapping("/get-group")
     public GroupWithStudents getGroupForUser() {
+        securityAssistant.currentUserHasRole(ADMIN, TEACHER, STUDENT);
         return userService.getGroupForUser(securityAssistant.getCurrentUserId());
     }
 

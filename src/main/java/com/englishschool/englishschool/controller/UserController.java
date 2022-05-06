@@ -51,9 +51,9 @@ public class UserController {
     }
 
     @GetMapping("/get-free-teachers")
-    public List<UserEntity> getAllTeachers() {
+    public List<UserEntity> getFreeTeachers() {
         securityAssistant.currentUserHasRole(ADMIN);
-        return userService.getUsersByUserRole(TEACHER);
+        return userService.getFreeTeachers();
     }
 
     @GetMapping("/current")

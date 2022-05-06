@@ -67,9 +67,6 @@ public class HometaskServiceImpl implements HometaskService {
         }
         UserHometaskEntity userHometaskEntity = userHometaskRepository.findByHometaskIdAndUserId(hometaskId, userId)
                 .orElseThrow(RuntimeException::new);
-        if (!userHometaskEntity.isDone()) {
-            return;
-        }
         userHometaskEntity.setMark(mark);
         userHometaskEntity.setDone(true);
         userHometaskRepository.save(userHometaskEntity);

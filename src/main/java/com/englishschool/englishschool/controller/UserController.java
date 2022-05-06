@@ -3,7 +3,6 @@ package com.englishschool.englishschool.controller;
 import com.englishschool.englishschool.domain.*;
 import com.englishschool.englishschool.entity.*;
 import com.englishschool.englishschool.enums.ContentType;
-import com.englishschool.englishschool.enums.UserRole;
 import com.englishschool.englishschool.service.AttachmentService;
 import com.englishschool.englishschool.service.GroupService;
 import com.englishschool.englishschool.service.SecurityAssistant;
@@ -36,18 +35,6 @@ public class UserController {
     public List<UserEntity> getNewUsers() {
         securityAssistant.currentUserHasRole(ADMIN);
         return userService.getUsersByUserRole(NEW);
-    }
-
-    @GetMapping("/groups-without-teacher")
-    public List<GroupShort> getFreeGroups() {
-        securityAssistant.currentUserHasRole(ADMIN);
-        return groupService.getFreeGroups();
-    }
-
-    @GetMapping("/groups-without-timetable")
-    public List<GroupShort> getGroupsWithoutTimetable() {
-        securityAssistant.currentUserHasRole(ADMIN);
-        return groupService.getGroupsWithoutTimetable() ;
     }
 
     @GetMapping("/get-free-teachers")
@@ -89,34 +76,6 @@ public class UserController {
         userService.restoreUser(id);
     }
 
-    @PostMapping("/assign-group")
-    public void assignGroupToUser(@RequestBody GroupRequest request) {
-        securityAssistant.currentUserHasRole(ADMIN);
-        userService.assignToGroup(request);
-    }
-
-    @PostMapping("/delete-group")
-    public void deleteUserFromGroup(@RequestBody GroupRequest request) {
-        securityAssistant.currentUserHasRole(ADMIN);
-        userService.deleteFromGroup(request);
-    }
-
-    @GetMapping("/get-group")
-    public GroupWithStudents getGroupForUser() {
-        securityAssistant.currentUserHasRole(ADMIN, TEACHER, STUDENT);
-        return userService.getGroupForUser(securityAssistant.getCurrentUserId());
-    }
-
-    @PostMapping("/rate-courses")
-    public void rateCourses(@RequestBody CourseRatingEntity ratingEntity) {
-        userService.rateCourses(ratingEntity, securityAssistant.getCurrentUserId());
-    }
-
-    @GetMapping("/courses-rating")
-    public List<CourseRating> getCoursesRating() {
-        return userService.getRating();
-    }
-
     @PostMapping("/{id}/save-photo")
     public void savePhoto(@RequestParam MultipartFile file, @PathVariable long id) throws IOException {
         securityAssistant.currentUserHasRole(ADMIN, TEACHER, STUDENT);
@@ -148,6 +107,38 @@ public class UserController {
         return groupService.createGroup(groupName, teacherId);
     }
 
+    @PostMapping("/assign-group")
+    public void assignGroupToUser(@RequestBody GroupRequest request) {
+        securityAssistant.currentUserHasRole(ADMIN);
+        userService.assignToGroup(request);
+    }
 
+    @PostMapping("/delete-group")
+    public void deleteUserFromGroup(@RequestBody GroupRequest request) {
+        securityAssistant.currentUserHasRole(ADMIN);
+        userService.deleteFromGroup(request);
+    }
+
+    @GetMapping("/get-group")
+    public GroupWithStudents getGroupForUser() {
+        securityAssistant.currentUserHasRole(ADMIN, TEACHER, STUDENT);
+        return userService.getGroupForUser(securityAssistant.getCurrentUserId());
+    }
+
+    @PostMapping("/rate-courses")
+    public void rateCourses(@RequestBody CourseRatingEntity ratingEntity) {
+        userService.rateCourses(ratingEntity, securityAssistant.getCurrentUserId());
+    }
+
+    @GetMapping("/courses-rating")
+    public List<CourseRating> getCoursesRating() {
+        return userService.getRating();
+    }
+
+    @GetMapping("/all-groups")
+    public List<GroupShort> getAllGroups() {
+        securityAssistant.currentUserHasRole(ADMIN);
+        return groupService.getAll();
+    }
 
 }

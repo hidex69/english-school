@@ -10,7 +10,6 @@ public interface GroupService {
     GroupEntity getGroupForUser(long userId);
     GroupEntity getGroupForTeacher(long teacherId);
     Long createGroup(String name, Long id);
-    List<GroupShort> getFreeGroups();
-    List<GroupShort> getGroupsWithoutTimetable();
     GroupEntity getGroupById(long id);
+    List<GroupShort> getAll();
 }

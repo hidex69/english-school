@@ -74,4 +74,10 @@ public class GroupServiceImpl implements GroupService {
     public GroupEntity getGroupById(long id) {
         return groupRepository.findById(id).orElseThrow(BadRequsetException::new);
     }
+
+    @Override
+    public List<GroupShort> getAll() {
+        return groupRepository.findAll().stream().map(x -> new GroupShort(x.getId(), x.getName(), x.getParticipants().size()))
+                .collect(Collectors.toList());
+    }
 }

@@ -34,6 +34,13 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public List<Blog> getLastBlogs(long count) {
+        return blogRepository.findAllByOrderByPostingDateDesc().stream()
+                .map(x -> new Blog(x.getId(), x.getTitle(), x.getText(), x.getPostingDate()))
+                .limit(count).collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public Long saveBlog(BlogEntity blogRequest) {
         if (blogRequest == null) {

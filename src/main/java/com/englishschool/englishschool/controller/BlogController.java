@@ -34,6 +34,11 @@ public class BlogController {
         return blogService.getBlogById(id);
     }
 
+    @GetMapping("last-blogs")
+    public List<Blog> getLastBlogs(@RequestParam long count) {
+        return blogService.getLastBlogs(count);
+    }
+
     @PostMapping
     public Long saveBlog(@RequestBody BlogEntity blogRequest) {
         securityAssistant.currentUserHasRole(ADMIN);

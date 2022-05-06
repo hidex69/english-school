@@ -6,6 +6,7 @@ import com.englishschool.englishschool.entity.GroupEntity;
 import com.englishschool.englishschool.entity.TimetableEntity;
 import com.englishschool.englishschool.entity.UserEntity;
 import com.englishschool.englishschool.exception.BadRequsetException;
+import com.englishschool.englishschool.exception.EntityNotFoundException;
 import com.englishschool.englishschool.repository.GroupRepository;
 import com.englishschool.englishschool.repository.TimetableRepository;
 import com.englishschool.englishschool.repository.UserRepository;
@@ -27,6 +28,11 @@ public class GroupServiceImpl implements GroupService {
     private final TimetableRepository timetableRepository;
 
     @Override
+    public void deleteGroup(long id) {
+        groupRepository.delete(groupRepository.findById(id).orElseThrow(EntityNotFoundException::new));
+    }
+
+    @Override
     public GroupEntity getGroupForUser(long userId) {
         Set<UserEntity> user = Collections.singleton(userRepository.findById(userId).orElseThrow(RuntimeException::new));
         return groupRepository.findFirstByParticipantsIn(user).orElseThrow(RuntimeException::new);
@@ -39,13 +45,12 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Long createGroup(String name, Long id) {
-        return groupRepository.save(new GroupEntity(null, name, id, Collections.emptySet())).getId();
+    public Long createGroup(String name) {
+        return groupRepository.save(new GroupEntity(null, name, null, Collections.emptySet())).getId();
     }
-    
 
     @Override
-    public GroupEntity getGroupById(long id) {
+    public GroupEntity getGroupEntityById(long id) {
         return groupRepository.findById(id).orElseThrow(BadRequsetException::new);
     }
 

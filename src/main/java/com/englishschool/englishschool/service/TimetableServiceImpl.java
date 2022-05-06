@@ -1,6 +1,8 @@
 package com.englishschool.englishschool.service;
 
 import com.englishschool.englishschool.entity.TimetableEntity;
+import com.englishschool.englishschool.exception.EntityNotFoundException;
+import com.englishschool.englishschool.repository.GroupRepository;
 import com.englishschool.englishschool.repository.TimetableRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,8 +15,9 @@ public class TimetableServiceImpl implements TimetableService {
     private final GroupService groupService;
 
     @Override
-    public TimetableEntity getTimetable(long userId) {
-        return timetableRepository.findByGroupId(groupService.getGroupForUser(userId).getId()).orElseThrow(() -> new RuntimeException("No timetable available"));
+    public TimetableEntity getTimetable(long groupId) {
+        return timetableRepository.findByGroupId(groupService.getGroupEntityById(groupId).getId())
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override

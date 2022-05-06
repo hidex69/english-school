@@ -63,9 +63,9 @@ public class EnglishSchoolApplication {
 
             userService.saveUser(new UserRequest(null, "admin@mail.ru", "Admin", "Admin", UserRole.ADMIN, false, "owo"));
 
-            groupService.createGroup("A1 group", 19L);
-            groupService.createGroup("B1 group", 20L);
-            groupService.createGroup("C2 group", 21L);
+            groupService.createGroup("A1 group");
+            groupService.createGroup("B1 group");
+            groupService.createGroup("C2 group");
 
             userService.assignToGroup(new GroupRequest(1l, 1l));
             userService.assignToGroup(new GroupRequest(1l, 2l));
@@ -82,8 +82,12 @@ public class EnglishSchoolApplication {
             userService.assignToGroup(new GroupRequest(2l, 12l));
 
             userService.assignToGroup(new GroupRequest(3l, 13l));
-            userService.assignToGroup(new GroupRequest(3l, 14));
-            userService.assignToGroup(new GroupRequest(3l, 15));
+            userService.assignToGroup(new GroupRequest(3l, 14l));
+            userService.assignToGroup(new GroupRequest(3l, 15l));
+
+            userService.assignToGroup(new GroupRequest(1l, 19l));
+            userService.assignToGroup(new GroupRequest(2l, 20l));
+            userService.assignToGroup(new GroupRequest(3l, 21l));
 
             userService.rateCourses(new CourseRatingEntity(null, "Greate courses", null, 5, new Date()), 1l);
             userService.rateCourses(new CourseRatingEntity(null, "Bad courses", null, 1, new Date()), 2l);

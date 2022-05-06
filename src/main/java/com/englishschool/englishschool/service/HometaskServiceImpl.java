@@ -36,7 +36,7 @@ public class HometaskServiceImpl implements HometaskService {
         UserEntity user = userService.getUser(userId);
         HometaskEntity hometaskEntity = hometaskRepository.save(hometask);
         List<UserHometaskEntity> userHometaskEntities = new LinkedList<>();
-        GroupEntity groupEntity = groupService.getGroupById(groupId);
+        GroupEntity groupEntity = groupService.getGroupEntityById(groupId);
         Set<Long> studentIds = groupEntity.getParticipants().stream()
                 .map(UserEntity::getId).collect(Collectors.toSet());
         studentIds.forEach(x -> {

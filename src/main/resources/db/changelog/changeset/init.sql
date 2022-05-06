@@ -46,7 +46,7 @@ create table if not exists notification(
 create table if not exists group_gr(
                                        id serial primary key,
                                        name varchar(250) not null,
-                                       teacher_id int not null,
+                                       teacher_id int,
                                        foreign key(teacher_id) references user_usr(id)
 );
 

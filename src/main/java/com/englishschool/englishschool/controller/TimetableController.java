@@ -17,10 +17,10 @@ public class TimetableController {
     private final TimetableService timetableService;
     private final SecurityAssistant securityAssistant;
 
-    @GetMapping("/{userId}")
-    public TimetableEntity getTimetable(@PathVariable Long userId) {
+    @GetMapping("/{grupId}")
+    public TimetableEntity getTimetable(@PathVariable Long groupId) {
         securityAssistant.currentUserHasRole(ADMIN, TEACHER, STUDENT);
-        return timetableService.getTimetable(userId);
+        return timetableService.getTimetable(groupId);
     }
 
     @PostMapping("/save")

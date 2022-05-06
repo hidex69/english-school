@@ -55,6 +55,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public UserEntity getUser(@PathVariable long id) {
+        securityAssistant.currentUserHasRole(ADMIN, STUDENT, TEACHER);
         return userService.getUser(id);
     }
 
@@ -102,9 +103,15 @@ public class UserController {
     }
 
     @PostMapping("/create-group")
-    public Long createGroup(@RequestParam String groupName, @RequestParam long teacherId) {
+    public Long createGroup(@RequestParam String groupName) {
         securityAssistant.currentUserHasRole(ADMIN);
-        return groupService.createGroup(groupName, teacherId);
+        return groupService.createGroup(groupName);
+    }
+
+    @PostMapping("/delete-group")
+    public void deleteGroup(@RequestParam long id) {
+        securityAssistant.currentUserHasRole(ADMIN);
+        groupService.deleteGroup(id);
     }
 
     @PostMapping("/assign-group")
@@ -113,7 +120,7 @@ public class UserController {
         userService.assignToGroup(request);
     }
 
-    @PostMapping("/delete-group")
+    @PostMapping("/delete-from-group")
     public void deleteUserFromGroup(@RequestBody GroupRequest request) {
         securityAssistant.currentUserHasRole(ADMIN);
         userService.deleteFromGroup(request);

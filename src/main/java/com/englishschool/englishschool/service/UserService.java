@@ -21,4 +21,5 @@ public interface UserService {
     void rateCourses(CourseRatingEntity ratingEntity, long userId);
     List<CourseRating> getRating();
     List<UserEntity> getUsersByUserRole(UserRole role);
+    List<UserEntity> getFreeTeachers();
 }

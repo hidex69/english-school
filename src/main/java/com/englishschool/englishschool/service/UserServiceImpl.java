@@ -31,6 +31,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserInfoRepository userInfoRepository;
 
     @Override
+    public List<UserEntity> getFreeTeachers() {
+        List<Long> ids = groupRepository.findAll().stream().map(GroupEntity::getTeacherId).collect(Collectors.toList());
+        return getUsersByUserRole(UserRole.TEACHER).stream().filter(x -> !ids.contains(x.getId())).collect(Collectors.toList());
+    }
+
+    @Override
     public List<UserEntity> getUsersByUserRole(UserRole role) {
         return userRepository.findByUserRole(role);
     }

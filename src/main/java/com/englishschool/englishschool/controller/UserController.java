@@ -50,7 +50,7 @@ public class UserController {
         return groupService.getGroupsWithoutTimetable() ;
     }
 
-    @GetMapping("/teachers")
+    @GetMapping("/get-free-teachers")
     public List<UserEntity> getAllTeachers() {
         securityAssistant.currentUserHasRole(ADMIN);
         return userService.getUsersByUserRole(TEACHER);
